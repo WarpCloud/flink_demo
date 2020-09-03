@@ -1,0 +1,40 @@
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: flink-taskmanager
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: flink
+        component: taskmanager
+    spec:
+      containers:
+      - name: taskmanager
+        image: 172.16.1.99/gold/flink:1.9.3
+        args:
+        - taskmanager
+        ports:
+        - containerPort: 6122
+          name: rpc
+        - containerPort: 6125
+          name: query
+        livenessProbe:
+          tcpSocket:
+            port: 6122
+          initialDelaySeconds: 30
+          periodSeconds: 60
+        volumeMounts:
+        - name: flink-config-volume
+          mountPath: /opt/flink/conf
+      volumes:
+      - name: flink-config-volume
+        configMap:
+          name: flink-config
+          items: 
+          - key: flink-conf.yaml 
+            path: flink-conf.yaml 
+          - key: log4j-console.properties 
+            path: log4j-console.properties
