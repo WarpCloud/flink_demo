@@ -21,6 +21,13 @@ spec:
           name: rpc
         - containerPort: 6125
           name: query
+        resources:
+          limits:
+            cpu: "4"
+            memory: 12Gi
+          requests:
+            cpu: "2"
+            memory: 4Gi
         livenessProbe:
           tcpSocket:
             port: 6122

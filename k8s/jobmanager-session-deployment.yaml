@@ -15,6 +15,13 @@ spec:
         image: 172.16.1.99/gold/flink:1.9.3
         args:
         - jobmanager
+        resources:
+          limits:
+            cpu: "4"
+            memory: 8Gi
+          requests:
+            cpu: "2"
+            memory: 4Gi
         ports:
         - containerPort: 6123
           name: rpc
